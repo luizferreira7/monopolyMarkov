@@ -1,6 +1,35 @@
 import numpy as np
 from fractions import Fraction
+from functools import lru_cache, wraps
 
+def cache(f):
+
+    def g(*args):
+        if args not in g.cache:
+            g.cache[args] = f(*args)
+        return g.cache[args]
+    g.cache = {}
+    g.__doc__  = f.__doc__
+    g.__name__ = f.__name__
+    return g
+
+def np_cache(function):
+    @lru_cache()
+    def cached_wrapper(hashable_array):
+        array = np.array(hashable_array)
+        return function(array)
+
+    @wraps(function)
+    def wrapper(array):
+        return cached_wrapper(tuple(array))
+
+    # copy lru_cache attributes over too
+    wrapper.cache_info = cached_wrapper.cache_info
+    wrapper.cache_clear = cached_wrapper.cache_clear
+
+    return wrapper
+
+@cache
 def linhaMatrizTransicao(linha):
 
     linhaMarkov = np.zeros([123])
