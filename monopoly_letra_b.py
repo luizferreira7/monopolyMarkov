@@ -1,5 +1,5 @@
-import numpy as np
 from random import randint
+from monopoly_letra_a import *
 
 duplas = [2, 4, 6, 8, 10, 12]
 
@@ -15,6 +15,7 @@ def jogarDados():
 
     return (d1, d2)
 
+@cache
 def proximoEstado(estadoAtual:Estado, jogada:tuple):
     novoEstado = Estado(estadoAtual.duplas, estadoAtual.posicao, estadoAtual.turnosCadeia)
 
@@ -45,27 +46,42 @@ def proximoEstado(estadoAtual:Estado, jogada:tuple):
             else:
                 novoEstado.turnosCadeia += 1
 
-    if (novoEstado.posicao > 39):
-        novoEstado.posicao = novoEstado.posicao%40
-
     return novoEstado
 
-def jogada(t):
+def simulacao(t:int, estadoInicial=0):
     estadoInicial = Estado(0, 0, 0)
-
-    dados = jogarDados()
-
-    novoEstado = proximoEstado(estadoInicial, dados)
-    print('Jogada 1:', dados, novoEstado.posicao+(novoEstado.duplas * 40))
-
-    print('-----------------------------------------')
+    jogadas = [estadoInicial]
+    jogadasExibicao=[estadoInicial.posicao]
 
     contador = 1
-    while (contador != t):
+    while contador < t:
         dados = jogarDados()
-        novoEstado = proximoEstado(novoEstado, dados)
-        print('Jogada ' + str(contador+1) + ':', 'Dados: ' + str(dados), 'Posição: ' + str(novoEstado.posicao+(novoEstado.duplas * 40)), 'Quase preso!' if novoEstado.duplas == 2 else '', 'Preso!' if novoEstado.turnosCadeia != 0 else '')
-        print('-----------------------------------------')
+        jogada = proximoEstado(jogadas[contador-1], dados)
+        if (jogada.posicao > 119):
+            jogadasExibicao.append("20p" + ((jogada.posicao % 40) * "'") )
+        else:
+            jogadasExibicao.append(str(jogada.posicao%40) + ((jogada.posicao // 40) * "'") )
+        jogadas.append(jogada)
         contador += 1
 
-jogada(1000)
+    return (jogadas, jogadasExibicao)
+
+@np_cache
+def jogadasAtePrisao(simulacao):
+
+    contador = 0
+    preso = False
+
+    for j in simulacao:
+        if (j.posicao == 120):
+            preso = True
+            break
+        elif (j.posicao < 40):
+            contador += 1
+
+    return contador if preso == True else 0
+
+
+# s = simulacao(10000)
+# c = jogadasAtePrisao(s[0])
+# print(c)
