@@ -46,7 +46,7 @@ def simulacao(t:int, imprimir=True, estadoInicial=0):
         jogadas.append(jogada)
         contador += 1
 
-    if (imprimir):
+    if (imprimir == True):
         print(jogadasExibicao)
 
     return jogadas
@@ -67,5 +67,5 @@ def passosAtePrisao(simulacao):
     return contador if preso == True else 0
 
 # s = simulacao(10000)
-# c = jogadasAtePrisao(s[0])
+# c = passosAtePrisao(s)
 # print(c)
