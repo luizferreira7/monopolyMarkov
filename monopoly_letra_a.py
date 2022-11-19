@@ -33,17 +33,16 @@ def linhaMatrizTransicao(linha):
 
     linhaMarkov = np.zeros([123])
 
-    probsCasas = [0, 0, 1/18, 1/18, 1/9, 1/9, 1/6, 1/9, 1/9, 1/18, 1/18, 0]
+    probsCasas = [0, 0, 0, 1/18, 1/18, 1/9, 1/9, 1/6, 1/9, 1/9, 1/18, 1/18, 0]
 
     if (linha <= 119):
         linhaAux = linha % 40
-        inicio = (linhaAux * 1)
-        over = (12 + inicio) - 40
-        for i in range(40):
-            if (i > inicio) and (i <= (inicio + 12)):
-                linhaMarkov[i] = probsCasas[i-linhaAux-1]
-            if (over >= 0) and (i <= over):
-                linhaMarkov[i] = probsCasas[len(probsCasas) - 1 - over + i]
+
+        for i, p in enumerate(probsCasas):
+            if (i + linhaAux > 39):
+                linhaMarkov[(linhaAux+i)%40] = p
+            else:
+                linhaMarkov[linhaAux+i] = p
 
         if (linha < 80):
             linhaMarkov[linha + 40] = 1/6
@@ -99,4 +98,4 @@ for i in range(123):
         print(i)
 
 
-
+imprimeLinhaMatriz(0)
