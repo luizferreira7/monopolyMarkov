@@ -72,7 +72,7 @@ def proximoEstado(estadoAtual:Estado, jogada:tuple):
 
     return novoEstado
 
-def simulacao(t:int, estadoInicial=0):
+def simulacao(t:int, imprimir=True, estadoInicial=0):
     estadoInicial = Estado(0, 0, 0, (0,0))
     jogadas = [estadoInicial]
     jogadasExibicao=[estadoInicial.exibicao]
@@ -81,29 +81,14 @@ def simulacao(t:int, estadoInicial=0):
     while contador < t:
         dados = jogarDados()
         jogada = proximoEstado(jogadas[contador-1], dados)
-        jogadasExibicao.append(jogada.exibicao)
+        if (imprimir == True):
+            jogadasExibicao.append(jogada.exibicao)
         jogadas.append(jogada)
         contador += 1
 
-    return (jogadas, jogadasExibicao)
+    if (imprimir == True):
+        print(jogadasExibicao)
 
-@np_cache
-def jogadasAtePrisao(simulacao):
+    return jogadas
 
-    contador = 0
-    preso = False
-
-    for j in simulacao:
-        if (j.posicao == 120):
-            preso = True
-            break
-        elif (j.posicao < 40):
-            contador += 1
-
-    return contador if preso == True else 0
-
-
-s = simulacao(10)
-print(s[1])
-# c = jogadasAtePrisao(s[0])
-# print(c)
+#s = simulacao(10000, False)

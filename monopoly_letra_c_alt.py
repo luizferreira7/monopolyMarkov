@@ -1,4 +1,4 @@
-from monopoly_letra_b import *
+from monopoly_letra_b_alt import *
 
 @np_cache
 def passosAtePrisao(simulacao):
@@ -7,10 +7,10 @@ def passosAtePrisao(simulacao):
     preso = False
 
     for j in simulacao:
-        if (j.turnosCadeia != 0):
+        if (j == 120):
             preso = True
             break
-        elif (j.duplas == 0):
+        elif (j < 40):
             contador += 1
 
     return contador if preso == True else 0
@@ -32,5 +32,5 @@ def media(t, imprimir=True):
 
   return sum(y)/len(y)
 
-e = media(100, False)
+e = media(1000, False)
 print("E(Y): " + str(round(e)))
