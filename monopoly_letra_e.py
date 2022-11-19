@@ -34,13 +34,24 @@ def probablidadesAposTempo(t:int):
 
     return probablidades
 
-def posicaoZ(z, n=1000000):
+def probPosicaoZ(z, n=1000000):
     probs = probablidadesAposTempo(n)
 
     p = probs[z]
 
     return p
 
-z = posicaoZ(20, 100000)
+def esperancaZ(n=1000000):
+    probs = probablidadesAposTempo(n)
 
-print(z)
+    e = 0
+    for i in range(len(probs)):
+        e += (i*probs[i])
+
+    return round(e)
+
+#z = probPosicaoZ(20, 100000)
+
+e = esperancaZ()
+
+print(e)

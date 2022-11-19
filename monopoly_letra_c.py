@@ -1,15 +1,21 @@
 from monopoly_letra_b_alt import *
 
-#supondo 1000 simulações de 100000 jogadas e seja Y a variável aleatória que representa o No de passos até a primeira prisão:
-y = []
-for i in range(0,1000):
-    s = simulacao(10000, False)
-    p = passosAtePrisao(s)
-    y.append(p)
+def media(t, imprimir=True):
+  y = []
 
-def esperanca(y:list):
+  contador = 0
+  while contador < t:
+      s = simulacao(10000, False)
+      p = passosAtePrisao(s)
+
+      y.append(p)
+
+      contador += 1
+
+  if (imprimir):
+    print(y)
+
   return sum(y)/len(y)
 
-print("Y=y  = " + str(y))
-e = esperanca(y)
-print("Aproximação para E(Y): " + str(round(e,2)))
+e = media(1000, False)
+print("E(Y): " + str(round(e)))
