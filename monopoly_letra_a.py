@@ -72,6 +72,7 @@ def imprimeLinhaMatriz(estado):
     for j in range(len(linha)):
         linhaAux.append(str(Fraction(linha[j]).limit_denominator()))
 
+    print('Linha do estado ' + str(estado))
     print(''.join(['{:6}'.format('' + str(item) + '  ') for item in range(0, 123)]))
     print(''.join(['{:6}'.format(item) for item in linhaAux]))
 

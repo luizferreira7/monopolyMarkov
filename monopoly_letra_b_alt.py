@@ -39,10 +39,11 @@ def simulacao(t:int, imprimir=True, estadoInicial=0):
     contador = 1
     while contador < t:
         jogada = proximoEstado(jogadas[contador-1])
-        if (jogada > 119):
-            jogadasExibicao.append("20p" + ((jogada % 40) * "'") )
-        else:
-            jogadasExibicao.append(str(jogada%40) + ((jogada // 40) * "'") )
+        if (imprimir == True):
+            if (jogada > 119):
+                jogadasExibicao.append("20p" + ((jogada % 40) * "'") )
+            else:
+                jogadasExibicao.append(str(jogada%40) + ((jogada // 40) * "'") )
         jogadas.append(jogada)
         contador += 1
 
@@ -51,21 +52,4 @@ def simulacao(t:int, imprimir=True, estadoInicial=0):
 
     return jogadas
 
-@np_cache
-def passosAtePrisao(simulacao):
-
-    contador = 0
-    preso = False
-
-    for j in simulacao:
-        if (j == 120):
-            preso = True
-            break
-        elif (j < 40):
-            contador += 1
-
-    return contador if preso == True else 0
-
-#s = simulacao(10000, False)
-# c = passosAtePrisao(s)
-# print(c)
+s = simulacao(1000000, False)

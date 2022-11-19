@@ -52,6 +52,8 @@ def esperancaZ(n=1000000):
 
 #z = probPosicaoZ(20, 100000)
 
-e = esperancaZ()
+# e = esperancaZ()
 
-print(e)
+# print(e)
+
+print(probablidadesAposTempo(1000000))
