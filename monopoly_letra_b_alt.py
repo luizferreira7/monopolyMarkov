@@ -66,6 +66,6 @@ def passosAtePrisao(simulacao):
 
     return contador if preso == True else 0
 
-#s = simulacao(10000000)
+#s = simulacao(10000, False)
 # c = passosAtePrisao(s)
 # print(c)

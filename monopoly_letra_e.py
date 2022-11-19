@@ -9,11 +9,11 @@ def matrizTransicao():
 
     return matriz
 
-def probablidadesAposTempo(t:int):
+def probablidadesAposTempo(t:int, posInicial=0):
     m = matrizTransicao()
 
     posicao = np.zeros([123])
-    posicao[0] = 1
+    posicao[posInicial] = 1
 
     contador = 0
     while contador < t:

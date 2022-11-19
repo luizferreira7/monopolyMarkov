@@ -23,7 +23,6 @@ def np_cache(function):
     def wrapper(array):
         return cached_wrapper(tuple(array))
 
-    # copy lru_cache attributes over too
     wrapper.cache_info = cached_wrapper.cache_info
     wrapper.cache_clear = cached_wrapper.cache_clear
 
@@ -46,18 +45,8 @@ def linhaMatrizTransicao(linha):
             if (over >= 0) and (i <= over):
                 linhaMarkov[i] = probsCasas[len(probsCasas) - 1 - over + i]
 
-        inicio = 40
-        fim = 80
-        if (linha >= 0 and linha <= 79):
-            if (linha >= 40 and linha <= 79):
-                inicio = 80
-                fim = 120
-
-            for j in range(inicio, fim):
-                if (linha%40 == j%40):
-                    linhaMarkov[j] = 1/6
-                else:
-                    linhaMarkov[j] = 0
+        if (linha < 80):
+            linhaMarkov[linha + 40] = 1/6
 
         if (linha >= 80 and linha <= 119):
             linhaMarkov[120] = 1/6
@@ -83,8 +72,8 @@ def imprimeLinhaMatriz(estado):
     for j in range(len(linha)):
         linhaAux.append(str(Fraction(linha[j]).limit_denominator()))
 
-    for i in range(5):
-        print(''.join(['{:5}'.format(item) for item in linhaAux[i*40:(i+1)*40]]))
+    print(''.join(['{:6}'.format('' + str(item) + '  ') for item in range(0, 123)]))
+    print(''.join(['{:6}'.format(item) for item in linhaAux]))
 
 def imprimeMatriz(m):
   auxM = []
