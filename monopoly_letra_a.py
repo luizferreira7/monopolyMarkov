@@ -97,5 +97,3 @@ for i in range(123):
         print(s)
         print(i)
 
-
-imprimeLinhaMatriz(0)

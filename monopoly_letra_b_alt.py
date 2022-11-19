@@ -41,9 +41,9 @@ def simulacao(t:int, imprimir=True, estadoInicial=0):
         jogada = proximoEstado(jogadas[contador-1])
         if (imprimir == True):
             if (jogada > 119):
-                jogadasExibicao.append("20p" + ((jogada % 40) * "'") )
+                jogadasExibicao.append("20p" + ((jogada % 40) * "*") )
             else:
-                jogadasExibicao.append(str(jogada%40) + ((jogada // 40) * "'") )
+                jogadasExibicao.append(str(jogada%40) + ((jogada // 40) * "*") )
         jogadas.append(jogada)
         contador += 1
 

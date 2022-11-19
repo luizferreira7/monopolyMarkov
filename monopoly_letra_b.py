@@ -4,10 +4,33 @@ from monopoly_letra_a import *
 duplas = [2, 4, 6, 8, 10, 12]
 
 class Estado:
-    def __init__(self, duplas, posicao, turnosCadeia):
+    def __init__(self, duplas, posicao, turnosCadeia, dados):
         self.duplas = duplas
         self.posicao = posicao
         self.turnosCadeia = turnosCadeia
+        self.dados = dados
+        self.status = 'Livre'
+        self.exibicao = 'Dados: ' + str(dados) + ' -> ' + str(posicao) + ' ' + self.status
+
+        if (duplas > 0):
+            self.status = 'Quase Preso'
+
+        if (turnosCadeia > 0):
+            self.status = 'Preso'
+
+    def update(self):
+        if (self.duplas > 0):
+            self.status = 'Quase Preso'
+        elif (self.turnosCadeia > 0):
+            self.status = 'Preso'
+        else:
+            self.status = 'Livre'
+
+        if (self.posicao > 119):
+            self.exibicao = 'Dados: ' + str(self.dados) + ' -> ' + "20p" + ((self.turnosCadeia % 40) * "*" + ' ' + self.status) 
+        else:
+            self.exibicao = 'Dados: ' + str(self.dados) + ' -> ' + str(self.posicao) + ((self.duplas) * "*") + ' ' + self.status
+        
 
 def jogarDados():
     d1 = randint(1, 6)
@@ -15,9 +38,8 @@ def jogarDados():
 
     return (d1, d2)
 
-@cache
 def proximoEstado(estadoAtual:Estado, jogada:tuple):
-    novoEstado = Estado(estadoAtual.duplas, estadoAtual.posicao, estadoAtual.turnosCadeia)
+    novoEstado = Estado(estadoAtual.duplas, estadoAtual.posicao, estadoAtual.turnosCadeia, jogada)
 
     if (estadoAtual.turnosCadeia == 0):
         if (novoEstado.duplas == 2):
@@ -38,7 +60,6 @@ def proximoEstado(estadoAtual:Estado, jogada:tuple):
         if (estadoAtual.turnosCadeia == 3):
             novoEstado.duplas = 0
             novoEstado.turnosCadeia = 0
-            novoEstado.posicao += (jogada[0] + jogada[1])
         else:
             if (jogada[0] == jogada[1]):
                 novoEstado.duplas = 0
@@ -46,21 +67,21 @@ def proximoEstado(estadoAtual:Estado, jogada:tuple):
             else:
                 novoEstado.turnosCadeia += 1
 
+    novoEstado.posicao %= 40
+    novoEstado.update()
+
     return novoEstado
 
 def simulacao(t:int, estadoInicial=0):
-    estadoInicial = Estado(0, 0, 0)
+    estadoInicial = Estado(0, 0, 0, (0,0))
     jogadas = [estadoInicial]
-    jogadasExibicao=[estadoInicial.posicao]
+    jogadasExibicao=[estadoInicial.exibicao]
 
     contador = 1
     while contador < t:
         dados = jogarDados()
         jogada = proximoEstado(jogadas[contador-1], dados)
-        if (jogada.posicao > 119):
-            jogadasExibicao.append("20p" + ((jogada.posicao % 40) * "'") )
-        else:
-            jogadasExibicao.append(str(jogada.posicao%40) + ((jogada.posicao // 40) * "'") )
+        jogadasExibicao.append(jogada.exibicao)
         jogadas.append(jogada)
         contador += 1
 
@@ -82,6 +103,7 @@ def jogadasAtePrisao(simulacao):
     return contador if preso == True else 0
 
 
-# s = simulacao(10000)
+s = simulacao(10)
+print(s[1])
 # c = jogadasAtePrisao(s[0])
 # print(c)
